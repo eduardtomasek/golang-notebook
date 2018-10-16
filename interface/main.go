@@ -35,7 +35,7 @@ func (t2 *T2) Foox() {
 	t2.val = 1
 }
 
-func Foox2(param *T2) {
+func Foox2(param I2) {
 	param.Foox()
 }
 
