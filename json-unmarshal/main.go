@@ -51,9 +51,7 @@ func main() {
 	`)
 
 	// Known structure
-
 	var test []Item
-	//err := json.Unmarshal(data, &test)
 	err := json.Unmarshal(data, &test)
 
 	if err != nil {
@@ -79,6 +77,8 @@ func main() {
 }
 
 /*
+Output:
+
 [
 	{
 		Id:1
