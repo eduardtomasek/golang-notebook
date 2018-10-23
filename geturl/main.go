@@ -4,13 +4,15 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
+	"strings"
 )
 
-func getURL(url string, c chan []string) {
+func getURL(url string, c chan []string, e chan error) {
 	resp, err := http.Get(url)
 
 	if err != nil {
-		c <- []string{"", ""}
+		e <- err
 		return
 	}
 
@@ -19,13 +21,19 @@ func getURL(url string, c chan []string) {
 	body, err := ioutil.ReadAll(resp.Body)
 
 	if err != nil {
-		c <- []string{"", ""}
+		e <- err
 		return
 	}
 
 	c <- []string{url, string(body)}
 
 	return
+}
+
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
 }
 
 func main() {
@@ -39,17 +47,26 @@ func main() {
 	}
 
 	c := make(chan []string)
+	e := make(chan error)
 
 	for _, adr := range adrs {
-		go getURL(adr, c)
+		go getURL(adr, c, e)
 	}
 
 	for i := 0; i < len(adrs); i++ {
 		select {
 		case msg := <-c:
-			fmt.Println(msg[0])
-			fmt.Println("==============")
-			fmt.Println(msg[1])
+			name := strings.Split(msg[0][7:], ".")[0]
+			fmt.Println(name)
+
+			f, err := os.Create(name + ".txt")
+			check(err)
+
+			_, err = f.WriteString(msg[1])
+			check(err)
+			f.Sync()
+		case emsg := <-e:
+			fmt.Println(emsg)
 		}
 	}
 
