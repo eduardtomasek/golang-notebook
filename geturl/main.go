@@ -3,16 +3,15 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 )
 
-func getURL(url string, c chan []string) error {
+func getURL(url string, c chan []string) {
 	resp, err := http.Get(url)
 
 	if err != nil {
-		log.Fatal(err)
-		return err
+		c <- []string{"", ""}
+		return
 	}
 
 	defer resp.Body.Close()
@@ -20,13 +19,13 @@ func getURL(url string, c chan []string) error {
 	body, err := ioutil.ReadAll(resp.Body)
 
 	if err != nil {
-		log.Fatal(err)
-		return err
+		c <- []string{"", ""}
+		return
 	}
 
 	c <- []string{url, string(body)}
 
-	return nil
+	return
 }
 
 func main() {
@@ -36,6 +35,7 @@ func main() {
 		"http://root.cz",
 		"http://abclinuxu.cz",
 		"http://echo24.cz",
+		"http://nonexistingpage.xx",
 	}
 
 	c := make(chan []string)
