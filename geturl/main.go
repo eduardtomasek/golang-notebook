@@ -71,4 +71,5 @@ func main() {
 	}
 
 	close(c)
+	close(e)
 }
