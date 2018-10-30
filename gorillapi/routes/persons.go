@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/eduardtomasek/golang-notebook/gorillapi/models"
 	"github.com/gorilla/mux"
-	"github.com/tomasek/golang-notebook/gorillapi/models"
 )
 
 func listPersonsHandler(w http.ResponseWriter, r *http.Request) {

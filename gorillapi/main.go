@@ -5,11 +5,11 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/eduardtomasek/golang-notebook/gorillapi/models"
+	"github.com/eduardtomasek/golang-notebook/gorillapi/routes"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/tomasek/golang-notebook/gorillapi/models"
-	"github.com/tomasek/golang-notebook/gorillapi/routes"
 )
 
 func headersMiddleware(next http.Handler) http.Handler {
@@ -35,7 +35,7 @@ func main() {
 	srv := &http.Server{
 		Handler: handlers.CORS()(router),
 		// Handler:      router,
-		Addr:         "127.0.0.1:6666",
+		Addr:         "127.0.0.1:80",
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}

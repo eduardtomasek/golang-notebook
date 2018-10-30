@@ -56,3 +56,15 @@ func (p *Person) Get(id int64) error {
 
 	return nil
 }
+
+// Add creates new user
+func (p *Person) Add(id int64, login string) error {
+	sqliteDB, err := Connect()
+	defer sqliteDB.Close()
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
