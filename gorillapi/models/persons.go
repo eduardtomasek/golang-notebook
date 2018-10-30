@@ -32,3 +32,27 @@ func PersonList() ([]Person, error) {
 
 	return persons, nil
 }
+
+// Get return person by ID
+func (p *Person) Get(id int64) error {
+	sqliteDB, err := Connect()
+	defer sqliteDB.Close()
+
+	if err != nil {
+		return err
+	}
+
+	rows, err := sqliteDB.Query(`SELECT login FROM person WHERE id = $1`, id)
+
+	if err != nil {
+		return err
+	}
+
+	for rows.Next() {
+		rows.Scan(&p.Login)
+	}
+
+	p.ID = id
+
+	return nil
+}

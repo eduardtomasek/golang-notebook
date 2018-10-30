@@ -15,6 +15,6 @@ func MakeRouter(r *mux.Router) {
 
 	userRouter := r.PathPrefix("/user").Subrouter()
 
-	// userRouter.Path("/{id}").HandlerFunc(getPerson).Methods("GET")
+	userRouter.Path("/get/{id}").HandlerFunc(getPerson).Methods("GET")
 	userRouter.Path("/list").HandlerFunc(listPersonsHandler).Methods("GET")
 }
