@@ -8,8 +8,8 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/tomasek/golang-notebook/gorillapi/db"
-	"github.com/tomasek/golang-notebook/gorillapi/user"
+	"github.com/tomasek/golang-notebook/gorillapi/models"
+	"github.com/tomasek/golang-notebook/gorillapi/routes"
 )
 
 func headersMiddleware(next http.Handler) http.Handler {
@@ -20,7 +20,7 @@ func headersMiddleware(next http.Handler) http.Handler {
 }
 
 func main() {
-	err := db.Init()
+	err := models.Init()
 
 	if err != nil {
 		panic(err)
@@ -30,7 +30,7 @@ func main() {
 	router.Use(headersMiddleware)
 
 	router.HandleFunc("/", GetRoot).Methods("GET")
-	user.MakeRouter(router)
+	routes.MakeRouter(router)
 
 	srv := &http.Server{
 		Handler: handlers.CORS()(router),
@@ -46,5 +46,5 @@ func main() {
 
 // GetRoot handling base request
 func GetRoot(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("{ \"status\": \"OK\" }"))
+	w.Write([]byte(`{ "status": "OK" }`))
 }
